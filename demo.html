@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="GBK" />
+<title>H5</title>
+<meta name="keywords" content="H5"
+<meta name="description" content="H5" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" />
+<meta name="format-detection" content="telephone=no" />
+
+<style type="text/css">
+*{margin:0;padding:0; list-style:none}
+.s1{width:100%;height:200%;position:absolute;top:0;left:0;overflow:hidden; background:#69C}
+.s2{position:absolute;width:50%;height:70%;top:0;left:0;background:#F90}
+.s3{position:absolute;width:50%;height:200px;right:0;top:0; background:#3C9;overflow:hidden}
+.s3 ul{}
+.s3 li{line-height:35px; text-align:center;}
+.s3 *{color:#FFF}
+</style>
+
+</head>
+
+
+<body>
+	<section class="s1" id="s1">
+		<div class="s2" id="s2">
+		</div>
+		<div class="s3" id="s3">
+			<ul>
+
+			</ul>
+		</div>
+	</section>
+</body>
+</html>
+<script type="text/javascript" src="touch3.js"></script>
+
+<script type="text/javascript">
+
+	var s1 = document.getElementById('s1');
+	var s2 = document.getElementById('s2');
+	var s3 = document.getElementById('s3');
+	var cb = window.touchBubble;
+	
+	//方案一
+	touch(s3).swipe({
+		move : function(v){ this.transForm( s3, 0 , [v.x*0.5,0] ); },
+		left :     function(){ this.transForm( s3, 200 , [-100,0] );},
+		right :  function(){ this.transForm( s3, 200 , [100,0] ); },
+		revert :     function(){ this.transForm( s3, 200 , [0,0] ); }
+	});
+	
+	//方案二
+	touch(s2).tap(function(){alert('触发了s2')}).noBubble();
+
+	touch(document).tap(function(){ alert('触发了s1'); });
+	
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
