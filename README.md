@@ -1,5 +1,5 @@
 # Touch3
-touch库3.0 by -momo
+touch库3.1 by -momo
 
 接口说明
 	全局暴露函数 touch，参数为被绑定的对象(原生)
