@@ -202,8 +202,10 @@
 			this.direction = Touch.swipeDirection(this.XY.x1, this.XY.x2, this.XY.y1, this.XY.y2);
 			
 			//开始运动
-			if(this.direction && this.type[this.direction]){
+			if(this.type[this.direction]){
 				this.type[this.direction].call(this);
+			}else if(this.type['revert']){
+				this.type['revert'].call(this);
 			}
 			
 			//清空坐标集
