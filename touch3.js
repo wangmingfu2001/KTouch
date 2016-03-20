@@ -1,4 +1,4 @@
-/* touch v3.0 by-momo 2016-03-18 */
+/* touch v3.1 by-momo 2016-03-21 */
 /* 
 接口说明 
 	全局暴露函数 touch，参数为被绑定的对象(原生)
@@ -14,8 +14,9 @@
 		bind()
 		unbind()
 		
-	阻止冒泡
+	阻止/恢复冒泡
 		noBubble()
+		reBubble()
 		
 	属性1个
 		this.stop   【 true:停止，默认为false】
@@ -42,6 +43,7 @@
 
 		//初始化 [el：传入的待滑动元素]
 		init : function(el){
+			if(!el){return;}
 			this.EVS = this.hasTouch ? 'touchstart' : 'mousedown';
 			this.EVM = this.hasTouch ? 'touchmove' : 'mousemove';
 			this.EVE = this.hasTouch ? 'touchend' : 'mouseup';
@@ -53,28 +55,34 @@
 			this.firstMove = false;  //是否是第一次滑动(便于做用户期望选择)
 			this.stop = false;          //停止滑动
 			this.estimate = '';         //用户预期滑动方向存储
+			this.el._evs = this.el._evs || null;   //事件队列
 			this.bind();                   //激活事件绑定
 		},
 		
 		//事件绑定
 		bind : function( callback,touchType ){
 			var _this = this;
-			_this.fn_ts = function(e){ _this.ts.call(_this,e) };
-			_this.fn_tm = function(e){ _this.tm.call(_this,e) };
-			_this.fn_te = function(e){ _this.te.call(_this,e) };
-		
-			_this.el.addEventListener( _this.EVS,_this.fn_ts,false );
-			_this.el.addEventListener( _this.EVM,_this.fn_tm,false );
-			_this.el.addEventListener( _this.EVE,_this.fn_te,false );
+			//事件队列填充(待完善)
+			if(!_this.el._evs){
+				_this.el._evs = {
+					fn_ts : function(e){ _this.ts.call(_this,e) },
+					fn_tm : function(e){ _this.tm.call(_this,e) },
+					fn_te :  function(e){ _this.te.call(_this,e) }
+				};
+			}
+			_this.el.addEventListener( _this.EVS,_this.el._evs.fn_ts,false );
+			_this.el.addEventListener( _this.EVM,_this.el._evs.fn_tm,false );
+			_this.el.addEventListener( _this.EVE,_this.el._evs.fn_te,false );
 			_this.el.onselectstart = function(){return false;};
 			return this;
 		},
 		
 		//事件移除
 		unbind : function(){
-			this.el.removeEventListener( this.EVS,this.fn_ts );
-			this.el.removeEventListener( this.EVM,this.fn_tm );
-			this.el.removeEventListener( this.EVE,this.fn_te );
+			var _this = this;
+			_this.el.removeEventListener( _this.EVS,_this.el._evs.fn_ts );
+			_this.el.removeEventListener( _this.EVM,_this.el._evs.fn_tm );
+			_this.el.removeEventListener( _this.EVE,_this.el._evs.fn_te );
 			return this;
 		},
 		
@@ -90,6 +98,11 @@
 			return this;
 		},
 		
+		//恢复冒泡
+		reBubble : function(){
+			this.cb = false;
+			return this;
+		},
 		//滑动开始
 		ts : function(e){
 			var _this = this, d = this.XY;
@@ -180,7 +193,7 @@
 						break;
 					};
 					
-				}else{ //第二次开始运动
+				}else{ //第二次开始运动	
 					e.preventDefault();
 					_this.type['move'] && _this.type['move'].call(_this,vv,e);
 				}
@@ -238,7 +251,7 @@
 	
 	//滑动方向识别函数
 	Touch.swipeDirection=function(x1, x2, y1, y2){
-		if(Math.abs(x2 - x1) > 30 || Math.abs(y1 - y2) > 30){
+		if(Math.abs(x2 - x1) > 50 || Math.abs(y1 - y2) > 50){
 				return Math.abs(x1 - x2) >=	Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'left' : 'right') : (y1 - y2 > 0 ? 'up' : 'down');
 		}else{
 			return 'revert';	
