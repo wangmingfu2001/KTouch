@@ -180,7 +180,8 @@
 						break;
 					};
 					
-				}else{ //第二次开始运动	
+				}else{ //第二次开始运动
+					e.preventDefault();
 					_this.type['move'] && _this.type['move'].call(_this,vv,e);
 				}
 				
