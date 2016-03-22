@@ -223,6 +223,9 @@
 			
 			//清空坐标集
 			this.XY = {};
+
+			//恢复move的方向识别
+			this.firstMove = false;
 		},
 		
 		//简易transForm
