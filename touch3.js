@@ -18,8 +18,9 @@
 		noBubble()
 		reBubble()
 		
-	属性1个
+	属性2个
 		this.stop   【 true:停止，默认为false】
+		this.cb   【 true:不冒泡，默认为false】
 */ 
 ;(function(global,doc,factoryFn){
 	var factory = factoryFn(global,doc);
