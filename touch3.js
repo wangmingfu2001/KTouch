@@ -21,6 +21,10 @@
 	属性2个
 		this.stop   【 true:停止，默认为false】
 		this.cb   【 true:不冒泡，默认为false】
+		
+	其他说明，为防止ios的tap事件点穿（非冒泡）
+	请在tap事件里，手工添加
+	e.preventDefault();
 */ 
 ;(function(global,doc,factoryFn){
 	var factory = factoryFn(global,doc);
@@ -129,11 +133,11 @@
 			d.y1 = _this.hasTouch ? e.touches[0].pageY : e.clientY;
 
 			//执行touchstart事件
-			_this.type['start'] && _this.type['start'].call(_this);
+			_this.type['start'] && _this.type['start'].call(_this,e);
 			
 			//190毫秒后执行tap事件
 			_this.tapTimeOut = setTimeout(function(){
-				_this.type['tap'] && _this.type['tap'].call(_this);
+				_this.type['tap'] && _this.type['tap'].call(_this,e);
 				_this.stop = true;
 			},190);
 			
