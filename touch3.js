@@ -39,7 +39,7 @@
 	var Touch = new Function();
 	
 	Touch.prototype = {
-		version :        '3.0',  //3.0¸Ä°æ
+		version :        '3.1',
 		constructor :  Touch,
 		hasTouch :  'ontouchstart' in window,
 		
