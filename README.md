@@ -22,17 +22,15 @@ touch库3.1 by -momo
 	属性2个
 		this.stop   【 true:停止，默认为false】
 		this.cb   【 true:不冒泡，默认为false】
-	
 		
-其他说明
-	为防止ios的tap事件点穿（非冒泡）
-	请在tap事件里，手工添加
-	e.preventDefault();
-
-
-回调函数的参数说明：
- 	start和tap方法，可接收到事件对象 e
- 	move方法，参数有 移动的坐标{x,y}和时间对象 e
-
+	其他说明
+		为防止ios的tap事件点穿（非冒泡）
+		请在tap事件里，手工添加
+		e.preventDefault
+		
+	回调函数的参数说明：
+		start和tap方法，可接收到事件对象 e
+		move方法，参数有 移动的坐标{x,y}和时间对象 e
+		
 
 http://wangmingfu2001.github.io/KTouch/
