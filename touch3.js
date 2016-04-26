@@ -29,6 +29,7 @@
  	回调函数的参数说明：
  	start和tap方法，可接收到事件对象 e
  	move方法，参数有 移动的坐标{x,y}和时间对象 e
+ 	move方法新增rate参数（移动值倍率输出），包括x，y两个属性
 
 */ 
 ;(function(global,doc,factoryFn){
@@ -155,7 +156,8 @@
 			if(this.stop){return;}
 			var _this = this,
 				 d = this.XY,
-				 vv = {}; //返回的坐标差
+				vv = {}, //返回的坐标差
+				rate = {}; //返回的倍率基准
 				 
 			//记录新坐标
 			d.x2 = _this.hasTouch ? e.touches[0].pageX : e.clientX;
@@ -164,7 +166,16 @@
 			//坐标差(move函数的参数)
 			vv.x = d.x2 - d.x1;
 			vv.y = d.y2 - d.y1;
-			
+
+			//倍率计算
+			rate.y = (vv.y * 0.005).toFixed(3);
+			rate.y>1 && (rate.y=1);
+			rate.y<-1 && (rate.y=-1);
+
+			rate.x = (vv.x * 0.005).toFixed(3);
+			rate.x>1 && (rate.x=1);
+			rate.x<-1 && (rate.x=-1);
+
 			//滑动判断
 			if(Math.abs(vv.x)>3 || Math.abs(vv.y)>3){   //断定此次事件为move事件
 			
@@ -205,7 +216,7 @@
 					
 				}else{ //第二次开始运动	
 					e.preventDefault();
-					_this.type['move'] && _this.type['move'].call(_this,vv,e);
+					_this.type['move'] && _this.type['move'].call(_this,vv,e,rate);
 				}
 				
 			}else{  //断定此次事件为轻击事件
