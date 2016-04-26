@@ -26,7 +26,7 @@
 		<div class="s2" id="s2">
 		</div>
 		<div class="s3" id="s3">
-			<dv>◊Û”“ª¨Œ“∞°</div>
+			<dv>Â∑¶Âè≥ÊªëÊàëÂïä</div>
 		</div>
 	</section>
 </body>
@@ -38,9 +38,8 @@
 	var s1 = document.getElementById('s1');
 	var s2 = document.getElementById('s2');
 	var s3 = document.getElementById('s3');
-	var cb = window.touchBubble;
 	
-	//∑Ω∞∏“ª
+	//ÊñπÊ°à‰∏Ä
 	touch(s3).swipe({
 		move : function(v){ this.transForm( s3, 0 , [v.x*0.5,0] ); },
 		left :     function(){ this.transForm( s3, 200 , [-100,0] );},
@@ -48,10 +47,10 @@
 		revert :     function(){ this.transForm( s3, 200 , [0,0] ); }
 	});
 	
-	//∑Ω∞∏∂˛
-	touch(s2).tap(function(){alert('¥•∑¢¡Às2')}).noBubble();
+	//ÊñπÊ°à‰∫å
+	touch(s2).tap(function(){alert('Ëß¶Âèë‰∫Üs2')}).noBubble();
 
-	touch(document).tap(function(){ alert('¥•∑¢¡Às1'); });
+	touch(document).tap(function(){ alert('Ëß¶Âèë‰∫Üs1'); });
 	
 </script>
 
