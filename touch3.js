@@ -1,42 +1,42 @@
 /* touch v3.1 by-momo 2016-03-21 */
 /* 
-½Ó¿ÚËµÃ÷ 
-	È«¾Ö±©Â¶º¯Êı touch£¬²ÎÊıÎª±»°ó¶¨µÄ¶ÔÏó(Ô­Éú)
+æ¥å£è¯´æ˜ 
+	å…¨å±€æš´éœ²å‡½æ•° touchï¼Œå‚æ•°ä¸ºè¢«ç»‘å®šçš„å¯¹è±¡(åŸç”Ÿ)
 	
-	Á´Ê½·½·¨8¸ö¡¾²ÎÊıÊÇfunction¡¿
+	é“¾å¼æ–¹æ³•8ä¸ªã€å‚æ•°æ˜¯functionã€‘
 		start()  move()  tap()  right()
 		left()   up()  down()  revert()
 		
-	»ìºÏ·½·¨1¸ö
-		swipe(json)  ¡¾²ÎÊıÊÇjson¡¿
+	æ··åˆæ–¹æ³•1ä¸ª
+		swipe(json)  ã€å‚æ•°æ˜¯jsonã€‘
 		
-	½â³ı»¬¶¯°ó¶¨¼°ÔÙ´Î°ó¶¨
+	è§£é™¤æ»‘åŠ¨ç»‘å®šåŠå†æ¬¡ç»‘å®š
 		bind()
 		unbind()
 		
-	×èÖ¹/»Ö¸´Ã°Åİ
+	é˜»æ­¢/æ¢å¤å†’æ³¡
 		noBubble()
 		reBubble()
 		
-	ÊôĞÔ2¸ö
-		this.stop   ¡¾ true:Í£Ö¹£¬Ä¬ÈÏÎªfalse¡¿
-		this.cb   ¡¾ true:²»Ã°Åİ£¬Ä¬ÈÏÎªfalse¡¿
+	å±æ€§2ä¸ª
+		this.stop   ã€ true:åœæ­¢ï¼Œé»˜è®¤ä¸ºfalseã€‘
+		this.cb   ã€ true:ä¸å†’æ³¡ï¼Œé»˜è®¤ä¸ºfalseã€‘
 		
-	ÆäËûËµÃ÷£¬Îª·ÀÖ¹iosµÄtapÊÂ¼şµã´©£¨·ÇÃ°Åİ£©
-	ÇëÔÚtapÊÂ¼şÀï£¬ÊÖ¹¤Ìí¼Ó
+	å…¶ä»–è¯´æ˜ï¼Œä¸ºé˜²æ­¢iosçš„tapäº‹ä»¶ç‚¹ç©¿ï¼ˆéå†’æ³¡ï¼‰
+	è¯·åœ¨tapäº‹ä»¶é‡Œï¼Œæ‰‹å·¥æ·»åŠ 
 	e.preventDefault();
 
- 	»Øµ÷º¯ÊıµÄ²ÎÊıËµÃ÷£º
- 	startºÍtap·½·¨£¬¿É½ÓÊÕµ½ÊÂ¼ş¶ÔÏó e
- 	move·½·¨£¬²ÎÊıÓĞ ÒÆ¶¯µÄ×ø±ê{x,y}ºÍÊ±¼ä¶ÔÏó e
- 	move·½·¨ĞÂÔörate²ÎÊı£¨ÒÆ¶¯Öµ±¶ÂÊÊä³ö£©£¬°üÀ¨x£¬yÁ½¸öÊôĞÔ
+ 	å›è°ƒå‡½æ•°çš„å‚æ•°è¯´æ˜ï¼š
+ 	startå’Œtapæ–¹æ³•ï¼Œå¯æ¥æ”¶åˆ°äº‹ä»¶å¯¹è±¡ e
+ 	moveæ–¹æ³•ï¼Œå‚æ•°æœ‰ ç§»åŠ¨çš„åæ ‡{x,y}å’Œæ—¶é—´å¯¹è±¡ e
+ 	moveæ–¹æ³•æ–°å¢rateå‚æ•°ï¼ˆç§»åŠ¨å€¼å€ç‡è¾“å‡ºï¼‰ï¼ŒåŒ…æ‹¬xï¼Œyä¸¤ä¸ªå±æ€§
 
 */ 
 ;(function(global,doc,factoryFn){
 	var factory = factoryFn(global,doc);
-	//window½Ó¿Ú
+	//windowæ¥å£
 	window.touch = window.touch || factory;
-	//CommonJS¹æ·¶µÄ½Ó¿Ú
+	//CommonJSè§„èŒƒçš„æ¥å£
 	window.define && define(function(require,exports,module){
 		return factory;
 	});
@@ -49,31 +49,31 @@
 		constructor :  Touch,
 		hasTouch :  'ontouchstart' in window,
 		
-		//È«¾ÖÃ°Åİ¿ª¹Ø
+		//å…¨å±€å†’æ³¡å¼€å…³
 		cb : false,
 
-		//³õÊ¼»¯ [el£º´«ÈëµÄ´ı»¬¶¯ÔªËØ]
+		//åˆå§‹åŒ– [elï¼šä¼ å…¥çš„å¾…æ»‘åŠ¨å…ƒç´ ]
 		init : function(el){
 			if(!el){return;}
 			this.EVS = this.hasTouch ? 'touchstart' : 'mousedown';
 			this.EVM = this.hasTouch ? 'touchmove' : 'mousemove';
 			this.EVE = this.hasTouch ? 'touchend' : 'mouseup';
 			this.el = el;
-			this.XY = {};              //½»»¥¹ı³ÌÖĞµÄ×ø±ê¼¯ºÏ
-			this.type = {};           //´«ÈëµÄ »¬¶¯ĞĞÎª¼¯ºÏ
-			this.tapTimeOut = null; //tapÑÓ³ÙµÄ¶¨Ê±Æ÷
-			this.direction = '';         //×îÖÕÒÆ¶¯µÄ·½Ïò
-			this.firstMove = false;  //ÊÇ·ñÊÇµÚÒ»´Î»¬¶¯(±ãÓÚ×öÓÃ»§ÆÚÍûÑ¡Ôñ)
-			this.stop = false;          //Í£Ö¹»¬¶¯
-			this.estimate = '';         //ÓÃ»§Ô¤ÆÚ»¬¶¯·½Ïò´æ´¢
-			this.el._evs = this.el._evs || null;   //ÊÂ¼ş¶ÓÁĞ
-			this.bind();                   //¼¤»îÊÂ¼ş°ó¶¨
+			this.XY = {};             //äº¤äº’è¿‡ç¨‹ä¸­çš„åæ ‡é›†åˆ
+			this.type = {};           //å›è°ƒé˜Ÿåˆ—
+			this.tapTimeOut = null;   //tapå»¶è¿Ÿçš„å®šæ—¶å™¨
+			this.direction = '';      //æœ€ç»ˆç§»åŠ¨çš„æ–¹å‘
+			this.firstMove = false;   //æ˜¯å¦æ˜¯ç¬¬ä¸€æ¬¡æ»‘åŠ¨(ä¾¿äºåšç”¨æˆ·æœŸæœ›é€‰æ‹©)
+			this.stop = false;        //åœæ­¢æ»‘åŠ¨
+			this.estimate = '';       //ç”¨æˆ·é¢„æœŸæ»‘åŠ¨æ–¹å‘å­˜å‚¨
+			this.el._evs = this.el._evs || null;   //äº‹ä»¶é˜Ÿåˆ—
+			this.bind();              //æ¿€æ´»äº‹ä»¶ç»‘å®š
 		},
 		
-		//ÊÂ¼ş°ó¶¨
+		//äº‹ä»¶ç»‘å®š
 		bind : function( callback,touchType ){
 			var _this = this;
-			//ÊÂ¼ş¶ÓÁĞÌî³ä(´ıÍêÉÆ)
+			//äº‹ä»¶é˜Ÿåˆ—å¡«å……(å¾…å®Œå–„)
 			if(!_this.el._evs){
 				_this.el._evs = {
 					fn_ts : function(e){ _this.ts.call(_this,e) },
@@ -88,7 +88,7 @@
 			return this;
 		},
 		
-		//ÊÂ¼şÒÆ³ı
+		//äº‹ä»¶ç§»é™¤
 		unbind : function(){
 			var _this = this;
 			_this.el.removeEventListener( _this.EVS,_this.el._evs.fn_ts );
@@ -97,28 +97,28 @@
 			return this;
 		},
 		
-		//»¬¶¯»Øµ÷¶ÓÁĞ
+		//æ»‘åŠ¨å›è°ƒé˜Ÿåˆ—
 		swipe : function( json ){
 			typeof(json)=='object' && (this.type = json);
 			return this;
 		},
 		
-		//½ûÖ¹Ã°Åİ
+		//ç¦æ­¢å†’æ³¡
 		noBubble : function(){
 			this.cb = true;
 			return this;
 		},
 		
-		//»Ö¸´Ã°Åİ
+		//æ¢å¤å†’æ³¡
 		reBubble : function(){
 			this.cb = false;
 			return this;
 		},
-		//»¬¶¯¿ªÊ¼
+		//æ»‘åŠ¨å¼€å§‹
 		ts : function(e){
 			var _this = this, d = this.XY;
 			
-			//¸ù¾İ´«ÈëµÄĞĞÎª°ó¶¨£¬Ô¤¹À³öÓÃ»§ÆÚÍû
+			//æ ¹æ®ä¼ å…¥çš„è¡Œä¸ºç»‘å®šï¼Œé¢„ä¼°å‡ºç”¨æˆ·æœŸæœ›
 			if(!this.estimate){
 				if( this.type.left || this.type.right ){
 					this.estimate = 'x';
@@ -131,17 +131,17 @@
 				}
 			}
 			
-			//ÖØÖÃ»¬¶¯¿ª¹Ø
+			//é‡ç½®æ»‘åŠ¨å¼€å…³
 			_this.stop = false;
 			
-			//¼ÇÂ¼×ø±ê
+			//è®°å½•åæ ‡
 			d.x1 = _this.hasTouch ? e.touches[0].pageX : e.clientX;
 			d.y1 = _this.hasTouch ? e.touches[0].pageY : e.clientY;
 
-			//Ö´ĞĞtouchstartÊÂ¼ş
+			//æ‰§è¡Œtouchstartäº‹ä»¶
 			_this.type['start'] && _this.type['start'].call(_this,e);
 			
-			//190ºÁÃëºóÖ´ĞĞtapÊÂ¼ş
+			//190æ¯«ç§’åæ‰§è¡Œtapäº‹ä»¶
 			_this.tapTimeOut = setTimeout(function(){
 				_this.type['tap'] && _this.type['tap'].call(_this,e);
 				_this.stop = true;
@@ -151,23 +151,23 @@
 			return false;
 		},
 		
-		//»¬¶¯½øĞĞ
+		//æ»‘åŠ¨è¿›è¡Œ
 		tm : function(e){
 			if(this.stop){return;}
 			var _this = this,
 				 d = this.XY,
-				vv = {}, //·µ»ØµÄ×ø±ê²î
-				rate = {}; //·µ»ØµÄ±¶ÂÊ»ù×¼
+				vv = {}, //è¿”å›çš„åæ ‡å·®
+				rate = {}; //è¿”å›çš„å€ç‡åŸºå‡†
 				 
-			//¼ÇÂ¼ĞÂ×ø±ê
+			//è®°å½•æ–°åæ ‡
 			d.x2 = _this.hasTouch ? e.touches[0].pageX : e.clientX;
 			d.y2 = _this.hasTouch ? e.touches[0].pageY : e.clientY;
 			
-			//×ø±ê²î(moveº¯ÊıµÄ²ÎÊı)
+			//åæ ‡å·®(moveå‡½æ•°çš„å‚æ•°)
 			vv.x = d.x2 - d.x1;
 			vv.y = d.y2 - d.y1;
 
-			//±¶ÂÊ¼ÆËã
+			//å€ç‡è®¡ç®—
 			rate.y = (vv.y * 0.005).toFixed(3);
 			rate.y>1 && (rate.y=1);
 			rate.y<-1 && (rate.y=-1);
@@ -176,17 +176,17 @@
 			rate.x>1 && (rate.x=1);
 			rate.x<-1 && (rate.x=-1);
 
-			//»¬¶¯ÅĞ¶Ï
-			if(Math.abs(vv.x)>3 || Math.abs(vv.y)>3){   //¶Ï¶¨´Ë´ÎÊÂ¼şÎªmoveÊÂ¼ş
+			//æ»‘åŠ¨åˆ¤æ–­
+			if(Math.abs(vv.x)>3 || Math.abs(vv.y)>3){   //æ–­å®šæ­¤æ¬¡äº‹ä»¶ä¸ºmoveäº‹ä»¶
 			
-				//ÒÑ¾­»¬¶¯£¬ÇåµôtapÊÂ¼ş
+				//å·²ç»æ»‘åŠ¨ï¼Œæ¸…æ‰tapäº‹ä»¶
 				clearTimeout(_this.tapTimeOut);
 				
 				e.cancelBubble=_this.cb;
 				
-				//ÏÈÅĞ¶ÏÓÃ»§ĞĞÎª£¬²»move
+				//å…ˆåˆ¤æ–­ç”¨æˆ·è¡Œä¸ºï¼Œä¸move
 				if( !_this.firstMove ){
-					//Æ¥ÅäÓÃ»§ÒâÍ¼
+					//åŒ¹é…ç”¨æˆ·æ„å›¾
 					switch(_this.estimate){
 						case 'x':
 							if(Math.abs(vv.x)>Math.abs(vv.y)){
@@ -214,42 +214,42 @@
 						break;
 					};
 					
-				}else{ //µÚ¶ş´Î¿ªÊ¼ÔË¶¯	
+				}else{ //ç¬¬äºŒæ¬¡å¼€å§‹è¿åŠ¨	
 					e.preventDefault();
 					_this.type['move'] && _this.type['move'].call(_this,vv,e,rate);
 				}
 				
-			}else{  //¶Ï¶¨´Ë´ÎÊÂ¼şÎªÇá»÷ÊÂ¼ş
+			}else{  //æ–­å®šæ­¤æ¬¡äº‹ä»¶ä¸ºè½»å‡»äº‹ä»¶
 				e.preventDefault();
 			}
 			return false;
 		},
 		
-		//»¬¶¯½áÊø
+		//æ»‘åŠ¨ç»“æŸ
 		te : function(e){
 			if(this.stop){return;}
 			
-			//µ±¿ªÊ¼Ö´ĞĞ»Øµ÷µÄÊ±ºò£¬¹Ø±Õstart ºÍ move
+			//å½“å¼€å§‹æ‰§è¡Œå›è°ƒçš„æ—¶å€™ï¼Œå…³é—­start å’Œ move
 			this.stop = true;
 			
-			//Î»ÖÃ¼ÆËã
+			//ä½ç½®è®¡ç®—
 			this.direction = Touch.swipeDirection(this.XY.x1, this.XY.x2, this.XY.y1, this.XY.y2);
 			
-			//¿ªÊ¼ÔË¶¯
+			//å¼€å§‹è¿åŠ¨
 			if(this.type[this.direction]){
 				this.type[this.direction].call(this);
 			}else if(this.type['revert']){
 				this.type['revert'].call(this);
 			}
 			
-			//Çå¿Õ×ø±ê¼¯
+			//æ¸…ç©ºåæ ‡é›†
 			this.XY = {};
 
-			//»Ö¸´moveµÄ·½ÏòÊ¶±ğ
+			//æ¢å¤moveçš„æ–¹å‘è¯†åˆ«
 			this.firstMove = false;
 		},
 		
-		//¼òÒ×transForm
+		//ç®€æ˜“transForm
 		transForm : function(obj,speed,iTarget,type){
 			var ele=obj.style;
 			type = type || 'linear';
@@ -265,7 +265,7 @@
 		}
 	};
 	
-	//À©Õ¹·½·¨
+	//æ‰©å±•æ–¹æ³•
 	['start', 'move', 'tap', 'right', 'left', 'up', 'down', 'revert'].forEach(function(key){
 		Touch.prototype[key] = function(callback){
 			this.type[key] = callback;
@@ -273,7 +273,7 @@
 		}
 	});
 	
-	//»¬¶¯·½ÏòÊ¶±ğº¯Êı
+	//æ»‘åŠ¨æ–¹å‘è¯†åˆ«å‡½æ•°
 	Touch.swipeDirection=function(x1, x2, y1, y2){
 		if(Math.abs(x2 - x1) > 50 || Math.abs(y1 - y2) > 50){
 				return Math.abs(x1 - x2) >=	Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'left' : 'right') : (y1 - y2 > 0 ? 'up' : 'down');
@@ -282,10 +282,10 @@
 		}
 	};
 	
-	//init¹¹ÔìÆ÷Ô­ĞÍÖ¸ÏòtouchµÄÔ­ĞÍ
+	//initæ„é€ å™¨åŸå‹æŒ‡å‘touchçš„åŸå‹
 	Touch.prototype.init.prototype = Touch.prototype;
 	
-	//Êä³ö¹¤³§º¯Êı
+	//è¾“å‡ºå·¥å‚å‡½æ•°
 	return function( el ){
 		 return new Touch.prototype.init( el );
 	};
