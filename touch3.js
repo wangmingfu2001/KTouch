@@ -168,11 +168,11 @@
 			vv.y = d.y2 - d.y1;
 
 			//±¶ÂÊ¼ÆËã
-			rate.y = (vv.y * 0.005).toFixed(3);
+			rate.y = Number((vv.y * 0.005).toFixed(3));
 			rate.y>1 && (rate.y=1);
 			rate.y<-1 && (rate.y=-1);
 
-			rate.x = (vv.x * 0.005).toFixed(3);
+			rate.x = Number((vv.x * 0.005).toFixed(3));
 			rate.x>1 && (rate.x=1);
 			rate.x<-1 && (rate.x=-1);
 
