@@ -32,6 +32,7 @@
  	move方法新增rate参数（移动值倍率输出），包括x，y两个属性
 
 */ 
+"use strict";
 ;(function(global,doc,factoryFn){
 	var factory = factoryFn(global,doc);
 	//window接口
@@ -276,7 +277,7 @@
 	//滑动方向识别函数
 	Touch.swipeDirection=function(x1, x2, y1, y2){
 		if(Math.abs(x2 - x1) > 50 || Math.abs(y1 - y2) > 50){
-				return Math.abs(x1 - x2) >=	Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'left' : 'right') : (y1 - y2 > 0 ? 'up' : 'down');
+			return Math.abs(x1 - x2) >=	Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'left' : 'right') : (y1 - y2 > 0 ? 'up' : 'down');
 		}else{
 			return 'revert';	
 		}
