@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$USER_HOME$/Desktop/2016北京车展（PC）/js/bg_config.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/touch3.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../optimiz/origin/mod/ktouch3.3.js" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

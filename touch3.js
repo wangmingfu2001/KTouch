@@ -1,45 +1,45 @@
 /* touch v3.3 by-momo 2016-11-17 */
-/* 
-接口说明 
-	全局暴露函数 touch，参数为被绑定的对象(原生)
-	
-	链式方法10个【参数是function】
-		start()  move()  tap()  right()
-		left()   up()  down()  revert()
-		longtap()  end()
-	混合方法1个
-		swipe(json)  【参数是json】
-		
-	解除滑动绑定及再次绑定
-		bind()
-		unbind()
-		
-	保留浏览器默认行为 (不设置为阻止)
-	dP()
-	
-	阻止/恢复冒泡
-		noBubble()
-		reBubble()
-		
-	属性2个
-		this.stop   【 true:停止，默认为false】
-		this.cb   【 true:不冒泡，默认为false】
-		
-	其他说明，为防止ios的tap事件点穿（非冒泡）
-	请在tap事件里，手工添加
-	e.preventDefault();
+/*
+ 接口说明
+ 全局暴露函数 touch，参数为被绑定的对象(原生)
 
- 	回调函数的参数说明：
- 	start和tap方法，可接收到事件对象 e
- 	move方法，参数有 移动的坐标{x,y}和时间对象 e
- 	move方法新增rate参数（移动值倍率输出），包括x，y两个属性
+ 链式方法10个【参数是function】
+ start()  move()  tap()  right()
+ left()   up()  down()  revert()
+ longtap()  end()
 
-*/
+ 混合方法1个
+ swipe(json)  【参数是json】
+
+ 解除滑动绑定及再次绑定
+ bind()
+ unbind()
+
+ 保留浏览器默认行为 (不设置为阻止)
+ dP()
+
+ 阻止/恢复冒泡
+ noBubble()
+ reBubble()
+
+ 属性2个
+ this.stop   【 true:停止，默认为false】
+ this.cb   【 true:不冒泡，默认为false】
+
+ 其他说明，为防止ios的tap事件点穿（非冒泡）
+ 请在tap事件里，手工添加
+ e.preventDefault();
+
+ 回调函数的参数说明：
+ start和tap方法，可接收到事件对象 e
+ move方法，参数有 移动的坐标{x,y}和时间对象 e
+ move方法新增rate参数（移动值倍率输出），包括x，y两个属性
+ */
 
 /* 3.3版更新文档 */
 //修复了单击触发revert事件，增加保留浏览器默认行为
 
-"use strict";
+
 ;(function(global,doc,factoryFn){
 	var factory = factoryFn(global,doc);
 	//window接口
@@ -68,6 +68,8 @@
 			this.EVE = this.hasTouch ? 'touchend' : 'mouseup';
 			this.el = el;
 			this.XY = {};              //交互过程中的坐标集合
+			this.prevX = 0;       //交互过程中的坐标集合2
+			this.prevY = 0;       //交互过程中的坐标集合2
 			this.type = {};           //传入的 滑动行为集合
 			this.tapTimeOut = null; //tap延迟的定时器
 			this.longtapTimeOut = null; //long延迟的定时器
@@ -112,12 +114,12 @@
 			typeof(json)=='object' && (this.type = json);
 			return this;
 		},
-		
+
 		//允许默认行为
 		dP: function(){
 			this.preventD = false;
-			 return this;
-		 },
+			return this;
+		},
 
 		//禁止冒泡
 		noBubble : function(){
@@ -146,6 +148,8 @@
 				if(this.type.move && !this.type.left && !this.type.right &&  !this.type.down  && !this.type.up){
 					this.estimate = 'm';
 				}
+				_this.prevX = 0;
+				_this.prevY = 0;
 			}
 
 			//重置滑动开关
@@ -167,6 +171,7 @@
 			//900毫秒后执行longtap事件
 			if(_this.type['longtap']){
 				e.preventDefault();
+
 				_this.longtapTimeOut = setTimeout(function(){
 					_this.type['longtap'].call(_this,e);
 					//_this.stop = true;
@@ -181,10 +186,11 @@
 		tm : function(e){
 			if(this.stop){return;}
 			var _this = this,
-			d = this.XY,
-			vv = {}, //返回的坐标差
-			rate = {}; //返回的倍率基准
-			
+				d = this.XY,
+				vv = {}, //返回的距离按下坐标差
+				rate = {}; //返回的倍率基准
+			dis = {};//返回本次移动距离
+
 			//记录新坐标
 			d.x2 = _this.hasTouch ? e.touches[0].pageX : e.clientX;
 			d.y2 = _this.hasTouch ? e.touches[0].pageY : e.clientY;
@@ -192,6 +198,13 @@
 			//坐标差(move函数的参数)
 			vv.x = d.x2 - d.x1;
 			vv.y = d.y2 - d.y1;
+
+			var p={}; //本次移动距离
+			p.x=vv.x-_this.prevX;
+			p.y=vv.y-_this.prevY;
+
+			_this.prevX=vv.x;
+			_this.prevY=vv.y;
 
 			//倍率计算
 			rate.y = Number((vv.y * 0.005).toFixed(3));
@@ -243,7 +256,7 @@
 
 				}else{ //第二次开始运动
 					if(_this.preventD){e.preventDefault();}
-					_this.type['move'] && _this.type['move'].call(_this,vv,e,rate);
+					_this.type['move'] && _this.type['move'].call(_this,vv,e,rate,p);
 				}
 
 			}else{  //断定此次事件为轻击事件
